@@ -5,226 +5,278 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Color String Decoder</title>
 <style>
-  body {
-    background: #0a0a0a;
-    color: #e0e0e0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-  }
-  
-  h1 {
-    margin-bottom: 10px;
-    font-size: 2.5em;
-    font-weight: 300;
-    text-align: center;
-  }
-  
-  .subtitle {
-    color: #888;
-    margin-bottom: 30px;
-    text-align: center;
-  }
-  
-  .container {
-    width: 100%;
-    max-width: 1200px;
-  }
-  
-  .section {
-    background: #1a1a1a;
-    padding: 30px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .input-area {
-    margin-bottom: 20px;
-  }
-  
-  .input-area textarea {
-    width: 100%;
-    min-height: 120px;
-    background: #0a0a0a;
-    color: #4a9eff;
-    border: 2px solid #3a3a3a;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 12px;
-    padding: 15px;
-    box-sizing: border-box;
-    resize: vertical;
-  }
-  
-  .input-area textarea:focus {
-    outline: none;
-    border-color: #4a9eff;
-  }
-  
-  .decode-btn {
-    width: 100%;
-    padding: 20px;
-    font-size: 18px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: transform 0.2s;
-  }
-  
-  .decode-btn:hover {
-    transform: scale(1.02);
-  }
-  
-  .decode-btn:disabled {
-    background: #3a3a3a;
-    cursor: not-allowed;
-    transform: scale(1);
-  }
-  
-  .info-text {
-    color: #888;
-    font-size: 13px;
-    margin-top: 10px;
-  }
-  
-  .progress {
-    color: #4a9eff;
-    font-weight: bold;
-    text-align: center;
-    margin: 10px 0;
-  }
-  
-  .output-section {
-    display: none;
-  }
-  
-  .output-section.visible {
-    display: block;
-  }
-  
-  .stats {
-    background: #0a0a0a;
-    padding: 15px;
-    border-radius: 4px;
-    border: 2px solid #3a3a3a;
-    margin-bottom: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-  }
-  
-  .stat-item {
-    text-align: center;
-  }
-  
-  .stat-label {
-    color: #888;
-    font-size: 12px;
-    margin-bottom: 5px;
-  }
-  
-  .stat-value {
-    color: #4a9eff;
-    font-size: 20px;
-    font-weight: bold;
-  }
-  
-  .canvas-container {
-    background: #0a0a0a;
-    padding: 20px;
-    border-radius: 4px;
-    border: 2px solid #3a3a3a;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  #imageCanvas {
-    max-width: 100%;
-    border: 1px solid #3a3a3a;
-    image-rendering: pixelated;
-  }
-  
-  .download-btn {
-    width: 100%;
-    padding: 15px;
-    font-size: 16px;
-    background: #2a2a2a;
-    color: #e0e0e0;
-    border: 2px solid #3a3a3a;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .download-btn:hover {
-    background: #3a3a3a;
-    border-color: #4a9eff;
-  }
-  
-  .error {
-    background: #4a1a1a;
-    color: #ff6b6b;
-    padding: 15px;
-    border-radius: 4px;
-    border: 2px solid #8a3a3a;
-    margin-top: 15px;
-  }
+body {
+background: #0a0a0a;
+color: #e0e0e0;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+margin: 0;
+padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+min-height: 100vh;
+}
+
+h1 {
+margin-bottom: 10px;
+font-size: 2.5em;
+font-weight: 300;
+text-align: center;
+}
+
+.subtitle {
+color: #888;
+margin-bottom: 30px;
+text-align: center;
+}
+
+.container {
+width: 100%;
+max-width: 1200px;
+}
+
+.section {
+background: #1a1a1a;
+padding: 30px;
+border-radius: 8px;
+margin-bottom: 20px;
+}
+
+.upload-area {
+border: 3px dashed #3a3a3a;
+border-radius: 8px;
+padding: 60px 20px;
+text-align: center;
+background: #0a0a0a;
+transition: all 0.3s;
+cursor: pointer;
+}
+
+.upload-area:hover {
+border-color: #4a9eff;
+background: #151515;
+}
+
+.upload-area.dragover {
+border-color: #667eea;
+background: #1a1a2a;
+}
+
+.upload-icon {
+font-size: 64px;
+margin-bottom: 20px;
+}
+
+.upload-text {
+font-size: 18px;
+color: #e0e0e0;
+margin-bottom: 10px;
+}
+
+.upload-hint {
+color: #888;
+font-size: 14px;
+}
+
+#fileInput {
+display: none;
+}
+
+.file-info {
+background: #0a0a0a;
+padding: 15px;
+border-radius: 4px;
+border: 2px solid #3a3a3a;
+margin-top: 20px;
+display: none;
+}
+
+.file-info.visible {
+display: block;
+}
+
+.file-name {
+color: #4a9eff;
+font-weight: bold;
+margin-bottom: 5px;
+}
+
+.file-size {
+color: #888;
+font-size: 13px;
+}
+
+.decode-btn {
+width: 100%;
+padding: 20px;
+font-size: 18px;
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color: white;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-weight: bold;
+transition: transform 0.2s;
+margin-top: 20px;
+display: none;
+}
+
+.decode-btn.visible {
+display: block;
+}
+
+.decode-btn:hover {
+transform: scale(1.02);
+}
+
+.decode-btn:disabled {
+background: #3a3a3a;
+cursor: not-allowed;
+transform: scale(1);
+}
+
+.progress {
+color: #4a9eff;
+font-weight: bold;
+text-align: center;
+margin: 10px 0;
+}
+
+.output-section {
+display: none;
+}
+
+.output-section.visible {
+display: block;
+}
+
+.stats {
+background: #0a0a0a;
+padding: 15px;
+border-radius: 4px;
+border: 2px solid #3a3a3a;
+margin-bottom: 20px;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: 15px;
+}
+
+.stat-item {
+text-align: center;
+}
+
+.stat-label {
+color: #888;
+font-size: 12px;
+margin-bottom: 5px;
+}
+
+.stat-value {
+color: #4a9eff;
+font-size: 20px;
+font-weight: bold;
+}
+
+.canvas-container {
+background: #0a0a0a;
+padding: 20px;
+border-radius: 4px;
+border: 2px solid #3a3a3a;
+text-align: center;
+margin-bottom: 20px;
+}
+
+#imageCanvas {
+max-width: 100%;
+border: 1px solid #3a3a3a;
+image-rendering: pixelated;
+}
+
+.download-btn {
+width: 100%;
+padding: 15px;
+font-size: 16px;
+background: #2a2a2a;
+color: #e0e0e0;
+border: 2px solid #3a3a3a;
+border-radius: 4px;
+cursor: pointer;
+margin-top: 10px;
+}
+
+.download-btn:hover {
+background: #3a3a3a;
+border-color: #4a9eff;
+}
+
+.error {
+background: #4a1a1a;
+color: #ff6b6b;
+padding: 15px;
+border-radius: 4px;
+border: 2px solid #8a3a3a;
+margin-top: 15px;
+}
 </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🔍 Color String Decoder</h1>
-    <p class="subtitle">Decode and visualize color data strings from images</p>
-    
-    <!-- Input Section -->
-    <div class="section">
-      <h3 style="margin-top:0;">Paste Color Data String</h3>
-      <div class="input-area">
-        <textarea id="colorInput" placeholder="Paste your color string here (format: SPEC_V1|WIDTHxHEIGHT|color_data)"></textarea>
-        <div class="info-text">Example: SPEC_V1|100x50|255,0,0;0,255,0;0,0,255|...</div>
-      </div>
-      
-      <div class="progress" id="progress" style="display:none;"></div>
-      <button class="decode-btn" id="decodeBtn">Decode & Visualize</button>
-      <div id="errorMsg" class="error" style="display:none;"></div>
-    </div>
-    
-    <!-- Output Section -->
-    <div class="section output-section" id="outputSection">
-      <h3 style="margin-top:0;">Decoded Image</h3>
-      
-      <div class="stats">
-        <div class="stat-item">
-          <div class="stat-label">Original Size</div>
-          <div class="stat-value" id="sizeValue">-</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-label">Total Pixels</div>
-          <div class="stat-value" id="pixelsValue">-</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-label">Colors Decoded</div>
-          <div class="stat-value" id="colorsValue">-</div>
-        </div>
-      </div>
-      
-      <div class="canvas-container">
-        <canvas id="imageCanvas"></canvas>
-      </div>
-      
-      <button class="download-btn" id="downloadBtn">💾 Download Image</button>
-    </div>
-  </div>
+<div class="container">
+<h1>🔍 Color String Decoder</h1>
+<p class="subtitle">Upload and decode color data files</p>
+
+<!-- Input Section -->
+<div class="section">
+<h3 style="margin-top:0;">Upload Color Data File</h3>
+<div class="upload-area" id="uploadArea">
+<div class="upload-icon">📁</div>
+<div class="upload-text">Click to upload or drag & drop</div>
+<div class="upload-hint">Supports .txt files containing color string data</div>
+</div>
+<input type="file" id="fileInput" accept=".txt">
+
+<div class="file-info" id="fileInfo">
+<div class="file-name" id="fileName"></div>
+<div class="file-size" id="fileSize"></div>
+</div>
+
+<div class="progress" id="progress" style="display:none;"></div>
+<button class="decode-btn" id="decodeBtn">Decode & Visualize</button>
+<div id="errorMsg" class="error" style="display:none;"></div>
+</div>
+
+<!-- Output Section -->
+<div class="section output-section" id="outputSection">
+<h3 style="margin-top:0;">Decoded Image</h3>
+
+<div class="stats">
+<div class="stat-item">
+<div class="stat-label">Original Size</div>
+<div class="stat-value" id="sizeValue">-</div>
+</div>
+<div class="stat-item">
+<div class="stat-label">Total Pixels</div>
+<div class="stat-value" id="pixelsValue">-</div>
+</div>
+<div class="stat-item">
+<div class="stat-label">Colors Decoded</div>
+<div class="stat-value" id="colorsValue">-</div>
+</div>
+</div>
+
+<div class="canvas-container">
+<canvas id="imageCanvas"></canvas>
+</div>
+
+<button class="download-btn" id="downloadBtn">💾 Download Image</button>
+</div>
+</div>
 
 <script>
-const colorInput = document.getElementById('colorInput');
+const uploadArea = document.getElementById('uploadArea');
+const fileInput = document.getElementById('fileInput');
+const fileInfo = document.getElementById('fileInfo');
+const fileName = document.getElementById('fileName');
+const fileSize = document.getElementById('fileSize');
 const decodeBtn = document.getElementById('decodeBtn');
 const progress = document.getElementById('progress');
 const errorMsg = document.getElementById('errorMsg');
@@ -235,143 +287,205 @@ const pixelsValue = document.getElementById('pixelsValue');
 const colorsValue = document.getElementById('colorsValue');
 const downloadBtn = document.getElementById('downloadBtn');
 
+let currentFileContent = null;
+
+// Click to upload
+uploadArea.addEventListener('click', () => {
+fileInput.click();
+});
+
+// Drag and drop
+uploadArea.addEventListener('dragover', (e) => {
+e.preventDefault();
+uploadArea.classList.add('dragover');
+});
+
+uploadArea.addEventListener('dragleave', () => {
+uploadArea.classList.remove('dragover');
+});
+
+uploadArea.addEventListener('drop', (e) => {
+e.preventDefault();
+uploadArea.classList.remove('dragover');
+const files = e.dataTransfer.files;
+if (files.length > 0) {
+handleFile(files[0]);
+}
+});
+
+// File input change
+fileInput.addEventListener('change', (e) => {
+if (e.target.files.length > 0) {
+handleFile(e.target.files[0]);
+}
+});
+
+// Handle file
+function handleFile(file) {
+if (!file.name.endsWith('.txt')) {
+showError('Please upload a .txt file');
+return;
+}
+
+fileName.textContent = file.name;
+fileSize.textContent = formatFileSize(file.size);
+fileInfo.classList.add('visible');
+decodeBtn.classList.add('visible');
+errorMsg.style.display = 'none';
+outputSection.classList.remove('visible');
+
+// Read file content
+const reader = new FileReader();
+reader.onload = (e) => {
+currentFileContent = e.target.result;
+};
+reader.onerror = () => {
+showError('Failed to read file');
+};
+reader.readAsText(file);
+}
+
+function formatFileSize(bytes) {
+if (bytes < 1024) return bytes + ' B';
+if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+}
+
 // Decode button click
 decodeBtn.addEventListener('click', async () => {
-  const colorString = colorInput.value.trim();
-  
-  if (!colorString) {
-    showError('Please paste a color data string');
-    return;
-  }
-  
-  decodeBtn.disabled = true;
-  progress.style.display = 'block';
-  progress.textContent = 'Decoding...';
-  errorMsg.style.display = 'none';
-  outputSection.classList.remove('visible');
-  
-  try {
-    await decodeColorString(colorString);
-    progress.style.display = 'none';
-    outputSection.classList.add('visible');
-  } catch (error) {
-    showError(error.message);
-    progress.style.display = 'none';
-  } finally {
-    decodeBtn.disabled = false;
-  }
+if (!currentFileContent) {
+showError('No file loaded');
+return;
+}
+
+decodeBtn.disabled = true;
+progress.style.display = 'block';
+progress.textContent = 'Decoding...';
+errorMsg.style.display = 'none';
+outputSection.classList.remove('visible');
+
+try {
+await decodeColorString(currentFileContent);
+progress.style.display = 'none';
+outputSection.classList.add('visible');
+} catch (error) {
+showError(error.message);
+progress.style.display = 'none';
+} finally {
+decodeBtn.disabled = false;
+}
 });
 
 // Download button
 downloadBtn.addEventListener('click', () => {
-  const link = document.createElement('a');
-  link.download = 'decoded-image.png';
-  link.href = imageCanvas.toDataURL('image/png');
-  link.click();
+const link = document.createElement('a');
+link.download = 'decoded-image.png';
+link.href = imageCanvas.toDataURL('image/png');
+link.click();
 });
 
 function showError(message) {
-  errorMsg.textContent = '❌ Error: ' + message;
-  errorMsg.style.display = 'block';
+errorMsg.textContent = '❌ Error: ' + message;
+errorMsg.style.display = 'block';
 }
 
 async function decodeColorString(colorString) {
-  return new Promise((resolve, reject) => {
-    try {
-      // Parse the header
-      if (!colorString.startsWith('SPEC_V1|')) {
-        throw new Error('Invalid format. String must start with SPEC_V1|');
-      }
-      
-      const parts = colorString.split('|');
-      if (parts.length < 3) {
-        throw new Error('Invalid format. Missing size or color data');
-      }
-      
-      // Parse dimensions
-      const sizeMatch = parts[1].match(/(\d+)x(\d+)/);
-      if (!sizeMatch) {
-        throw new Error('Invalid size format. Expected format: WIDTHxHEIGHT');
-      }
-      
-      const width = parseInt(sizeMatch[1]);
-      const height = parseInt(sizeMatch[2]);
-      
-      if (width <= 0 || height <= 0 || width > 10000 || height > 10000) {
-        throw new Error('Invalid dimensions');
-      }
-      
-      progress.textContent = `Decoding ${width}×${height} image...`;
-      
-      // Setup canvas
-      imageCanvas.width = width;
-      imageCanvas.height = height;
-      const ctx = imageCanvas.getContext('2d');
-      const imageData = ctx.createImageData(width, height);
-      
-      // Parse color columns
-      const columns = parts.slice(2);
-      
-      if (columns.length !== width) {
-        throw new Error(`Expected ${width} columns but got ${columns.length}`);
-      }
-      
-      let totalColors = 0;
-      
-      // Process each column
-      for (let x = 0; x < width; x++) {
-        const column = columns[x];
-        const pixels = column.split(';');
-        
-        if (pixels.length !== height) {
-          throw new Error(`Column ${x}: Expected ${height} pixels but got ${pixels.length}`);
-        }
-        
-        for (let y = 0; y < height; y++) {
-          const rgb = pixels[y].split(',');
-          
-          if (rgb.length !== 3) {
-            throw new Error(`Invalid RGB format at column ${x}, row ${y}`);
-          }
-          
-          const r = parseInt(rgb[0]);
-          const g = parseInt(rgb[1]);
-          const b = parseInt(rgb[2]);
-          
-          if (isNaN(r) || isNaN(g) || isNaN(b) || 
-              r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-            throw new Error(`Invalid RGB values at column ${x}, row ${y}`);
-          }
-          
-          const pixelIndex = (y * width + x) * 4;
-          imageData.data[pixelIndex] = r;
-          imageData.data[pixelIndex + 1] = g;
-          imageData.data[pixelIndex + 2] = b;
-          imageData.data[pixelIndex + 3] = 255; // Alpha
-          totalColors++;
-        }
-        
-        // Update progress
-        if (x % 10 === 0) {
-          const percent = Math.floor((x / width) * 100);
-          progress.textContent = `Decoding... ${percent}%`;
-        }
-      }
-      
-      // Draw to canvas
-      ctx.putImageData(imageData, 0, 0);
-      
-      // Update stats
-      sizeValue.textContent = `${width}×${height}`;
-      pixelsValue.textContent = (width * height).toLocaleString();
-      colorsValue.textContent = totalColors.toLocaleString();
-      
-      resolve();
-      
-    } catch (error) {
-      reject(error);
-    }
-  });
+return new Promise((resolve, reject) => {
+try {
+// Parse the header
+if (!colorString.startsWith('SPEC_V1|')) {
+throw new Error('Invalid format. String must start with SPEC_V1|');
+}
+
+const parts = colorString.split('|');
+if (parts.length < 3) {
+throw new Error('Invalid format. Missing size or color data');
+}
+
+// Parse dimensions
+const sizeMatch = parts[1].match(/(\d+)x(\d+)/);
+if (!sizeMatch) {
+throw new Error('Invalid size format. Expected format: WIDTHxHEIGHT');
+}
+
+const width = parseInt(sizeMatch[1]);
+const height = parseInt(sizeMatch[2]);
+
+if (width <= 0 || height <= 0 || width > 10000 || height > 10000) {
+throw new Error('Invalid dimensions');
+}
+
+progress.textContent = `Decoding ${width}×${height} image...`;
+
+// Setup canvas
+imageCanvas.width = width;
+imageCanvas.height = height;
+const ctx = imageCanvas.getContext('2d');
+const imageData = ctx.createImageData(width, height);
+
+// Parse color columns
+const columns = parts.slice(2);
+
+if (columns.length !== width) {
+throw new Error(`Expected ${width} columns but got ${columns.length}`);
+}
+
+let totalColors = 0;
+
+// Process each column
+for (let x = 0; x < width; x++) {
+const column = columns[x];
+const pixels = column.split(';');
+
+if (pixels.length !== height) {
+throw new Error(`Column ${x}: Expected ${height} pixels but got ${pixels.length}`);
+}
+
+for (let y = 0; y < height; y++) {
+const rgb = pixels[y].split(',');
+
+if (rgb.length !== 3) {
+throw new Error(`Invalid RGB format at column ${x}, row ${y}`);
+}
+
+const r = parseInt(rgb[0]);
+const g = parseInt(rgb[1]);
+const b = parseInt(rgb[2]);
+
+if (isNaN(r) || isNaN(g) || isNaN(b) ||
+r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+throw new Error(`Invalid RGB values at column ${x}, row ${y}`);
+}
+
+const pixelIndex = (y * width + x) * 4;
+imageData.data[pixelIndex] = r;
+imageData.data[pixelIndex + 1] = g;
+imageData.data[pixelIndex + 2] = b;
+imageData.data[pixelIndex + 3] = 255; // Alpha
+totalColors++;
+}
+
+// Update progress
+if (x % 10 === 0) {
+const percent = Math.floor((x / width) * 100);
+progress.textContent = `Decoding... ${percent}%`;
+}
+}
+
+// Draw to canvas
+ctx.putImageData(imageData, 0, 0);
+
+// Update stats
+sizeValue.textContent = `${width}×${height}`;
+pixelsValue.textContent = (width * height).toLocaleString();
+colorsValue.textContent = totalColors.toLocaleString();
+
+resolve();
+
+} catch (error) {
+reject(error);
+}
+});
 }
 </script>
 </body>
